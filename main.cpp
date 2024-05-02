@@ -3,35 +3,67 @@
 #include <unordered_map>
 #include <vector>
 #include "LZW.cpp"
+#include "archivos.cpp"
 
 
-int main() {
+string leer_entrada() {
+    string entrada; 
+    string texto_completo; 
 
-	string entrada; 
-    string textoCompleto; 
-    
     cout << "Ingresa texto. Presiona Enter después de cada línea." << std::endl;
     
     while (std::getline(std::cin, entrada)) {
         if (entrada == "exit") { 
             break;
         }
-        textoCompleto += entrada + "\n"; 
+        texto_completo += entrada + "\n"; 
     }
     
-    cout << "Texto completo ingresado:" << endl;
-    cout << textoCompleto << endl;    
+    return texto_completo;
+}
 
-    vector<int> comprimido = comprimir_lzw(textoCompleto);
-    string descomprimido = descomprimir_lzw(comprimido);
-    
-    cout << "Original: " << textoCompleto << " " << textoCompleto.length() << endl;
-    cout << "Compressed: ";
-    for (int code : comprimido) {
-        cout << code << " ";
+
+int main(int argc, char *argv[]) {
+
+    if (argc != 3) {
+        cerr << "Uso: " << argv[0] << " <nombre de archivo sin extension> " << "<opcion>";
     }
-    cout << " " << comprimido.size() << endl;
-    cout << "Decompressed: " << descomprimido << " " << descomprimido.length() << endl;
+
+    string nombre_archivo = argv[1];
+    string opcion = argv[2];
+
+
+	if (opcion == "crear") {
+        string entrada = leer_entrada();
+
+        escribir_archivo_plano(entrada, nombre_archivo);
+
+        vector<int> comprimido = comprimir_lzw(entrada); 
+
+        for (int num: comprimido) {
+            cout << num << " ";
+
+        }
+        
+        cout << endl;
+
+        escribir_archivo_comprimido(comprimido, nombre_archivo);
+
+    }
+
+    if (opcion == "editar") {
+        vector<int> contenido = leer_archivo_comprimido(nombre_archivo);
+        string descomprimido = descomprimir_lzw(contenido);
+        cout << descomprimido;
+    }
+
+
+    
+
+
+
 
     return 0;
 }
+
+
