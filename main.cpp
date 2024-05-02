@@ -44,7 +44,7 @@ int main(int argc, char *argv[]) {
             cout << num << " ";
 
         }
-        
+
         cout << endl;
 
         escribir_archivo_comprimido(comprimido, nombre_archivo);
@@ -56,12 +56,6 @@ int main(int argc, char *argv[]) {
         string descomprimido = descomprimir_lzw(contenido);
         cout << descomprimido;
     }
-
-
-    
-
-
-
 
     return 0;
 }
